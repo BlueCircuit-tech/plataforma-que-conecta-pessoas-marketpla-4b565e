@@ -1962,6 +1962,281 @@
   </script>
 </section>
 
+    <section data-tela="envio-de-documentos" class="hidden">
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs font-medium text-marca-600 font-body">Envio de Documentos</span>
+          <span id="progresso-texto" class="text-xs font-semibold text-marca-900 font-body">0%</span>
+        </div>
+        <div class="w-full h-2 bg-marca-100 rounded-full overflow-hidden">
+          <div id="barra-progresso" class="h-full bg-marca-500 rounded-full transition-all duration-500 ease-out" style="width:0%"></div>
+        </div>
+        <p id="progresso-legenda" class="text-[10px] text-gray-400 font-body mt-1">0 de 4 documentos enviados</p>
+      </div>
+
+      <div id="lista-documentos" class="space-y-3"></div>
+
+      <div id="area-observacoes" class="hidden mt-4 bg-amber-50 border border-amber-200 rounded-xl p-3">
+        <div class="flex items-start gap-2">
+          <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          <div>
+            <p class="text-xs font-semibold text-amber-700 font-body">Ajustes solicitados pela equipe</p>
+            <p id="texto-observacao" class="text-xs text-amber-600 font-body mt-0.5"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <button id="btn-enviar-analise" disabled onclick="envio_de_documentos_enviar()" class="w-full py-3.5 rounded-xl font-display font-semibold text-sm text-white bg-gray-300 cursor-not-allowed transition-all duration-200 active:scale-95 disabled:active:scale-100">Enviar para Análise</button>
+        <p id="btn-enviar-aviso" class="text-[10px] text-gray-400 text-center mt-1.5 font-body">Envie todos os documentos para habilitar</p>
+      </div>
+
+      <div id="area-historico" class="mt-8">
+        <h3 class="font-display font-bold text-sm text-marca-900 mb-3">Histórico de Análise</h3>
+        <div id="lista-historico" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <input type="file" id="input-arquivo" class="hidden" accept=".pdf,.jpg,.jpeg,.png,.webp" onchange="envio_de_documentos_arquivoSelecionado()">
+    <input type="hidden" id="doc-atual-id" value="">
+
+    <script>
+    (function(){
+      const documentos = [
+        { id:'cpf', nome:'CPF', desc:'Documento com foto, frente e verso', icone:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>', status:'pendente', arquivo:null, nomeArquivo:'', observacao:'' },
+        { id:'rg', nome:'RG', desc:'Documento de identidade, frente e verso', icone:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>', status:'pendente', arquivo:null, nomeArquivo:'', observacao:'' },
+        { id:'renda', nome:'Comprovante de Renda', desc:'Holerite, extrato ou declaração de IR', icone:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>', status:'pendente', arquivo:null, nomeArquivo:'', observacao:'' },
+        { id:'residencia', nome:'Comprovante de Residência', desc:'Conta de luz, água ou telefone (últimos 3 meses)', icone:'<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>', status:'pendente', arquivo:null, nomeArquivo:'', observacao:'' }
+      ];
+
+      const statusConfig = {
+        pendente: { cor:'bg-gray-100 text-gray-500 border-gray-200', rotulo:'Pendente', icone:'M12 8v4m0 4h.01' },
+        enviado:  { cor:'bg-blue-50 text-blue-600 border-blue-200', rotulo:'Enviado', icone:'M5 13l4 4L19 7' },
+        aprovado: { cor:'bg-green-50 text-green-600 border-green-200', rotulo:'Aprovado', icone:'M5 13l4 4L19 7' },
+        reprovado:{ cor:'bg-red-50 text-red-600 border-red-200', rotulo:'Rejeitado', icone:'M6 18L18 6M6 6l12 12' }
+      };
+
+      const historicoAnalise = [
+        { data:'2025-01-18', acao:'Documentos enviados pelo cliente', usuario:'Você', detalhe:'4 documentos anexados' },
+        { data:'2025-01-19', acao:'Análise iniciada', usuario:'Equipe AlphaMon', detalhe:'Protocolo #ALM-2025-0847' },
+        { data:'2025-01-20', acao:'CPF reprovado', usuario:'Ana Silva (Analista)', detalhe:'Documento ilegível. Necessário enviar novamente em melhor resolução.' }
+      ];
+
+      function renderizar(){
+        const lista = document.getElementById('lista-documentos');
+        lista.innerHTML = documentos.map(d => {
+          const cfg = statusConfig[d.status];
+          const iconeUpload = d.status === 'pendente'
+            ? '<svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>'
+            : '<svg class="w-8 h-8" style="color:var(--status-color)'+d.status+')" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>';
+          const corStatus = d.status === 'pendente' ? 'text-gray-400' : d.status === 'enviado' ? 'text-blue-500' : d.status === 'aprovado' ? 'text-green-500' : 'text-red-500';
+          const corCheck = d.status === 'pendente' ? 'bg-gray-200' : d.status === 'enviado' ? 'bg-blue-500' : d.status === 'aprovado' ? 'bg-green-500' : 'bg-red-500';
+          return '<div onclick="envio_de_documentos_abrirDoc(\''+d.id+'\')" class="card bg-white rounded-2xl border border-gray-100 p-4 cursor-pointer transition-all duration-200 active:scale-[0.98] hover:border-marca-200 hover:shadow-md" data-doc="'+d.id+'">'+
+            '<div class="flex items-center gap-3.5">'+
+              '<div class="relative flex-shrink-0">'+
+                '<div class="w-12 h-12 rounded-xl flex items-center justify-center '+(d.status==='pendente'?'bg-gray-50':'bg-marca-50')+'">'+iconeUpload+'</div>'+
+                '<div class="absolute -bottom-0.5 -right-0.5 w-5 h-5 '+corCheck+' rounded-full flex items-center justify-center">'+
+                  (d.status !== 'pendente' ? '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>' : '')+
+                '</div>'+
+              '</div>'+
+              '<div class="flex-1 min-w-0">'+
+                '<h4 class="font-display font-bold text-sm text-marca-900">'+d.nome+'</h4>'+
+                '<p class="text-[11px] text-gray-400 font-body truncate mt-0.5">'+(d.nomeArquivo || d.desc)+'</p>'+
+                (d.observacao ? '<p class="text-[10px] text-amber-600 font-body mt-1 line-clamp-1">Obs: '+d.observacao+'</p>' : '')+
+              '</div>'+
+              '<div class="flex-shrink-0 flex flex-col items-end gap-1">'+
+                '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full border '+cfg.cor+'">'+cfg.rotulo+'</span>'+
+                (d.status === 'pendente' ? '<svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>' : '<svg class="w-4 h-4 text-marca-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>')+
+              '</div>'+
+            '</div>'+
+            (d.status === 'enviado' || d.status === 'aprovado' || d.status === 'reprovado' ? '<div class="mt-3 pt-3 border-t border-gray-50 flex items-center gap-2">'+
+              '<div class="flex-1 bg-marca-900/5 rounded-lg px-3 py-2 flex items-center gap-2.5">'+
+                '<svg class="w-4 h-4 text-marca-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'+
+                '<span class="text-[11px] text-marca-700 font-body truncate">'+d.nomeArquivo+'</span>'+
+              '</div>'+
+              '<div class="flex gap-1">'+
+                '<button onclick="event.stopPropagation();envio_de_documentos_visualizarDoc(\''+d.id+'\')" class="p-2 rounded-lg bg-marca-50 text-marca-600 hover:bg-marca-100 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>'+
+                '<button onclick="event.stopPropagation();envio_de_documentos_removerDoc(\''+d.id+'\')" class="p-2 rounded-lg bg-red-50 text-red-400 hover:bg-red-100 hover:text-red-600 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>'+
+              '</div>'+
+            '</div>' : '')+
+            '</div>'
+          ).join('');
+          window.envio_de_documentos_atualizarProgresso();
+      }
+
+      window.envio_de_documentos_atualizarProgresso = function(){
+        const enviados = documentos.filter(d => d.status !== 'pendente').length;
+        const pct = Math.round((enviados / documentos.length) * 100);
+        document.getElementById('barra-progresso').style.width = pct + '%';
+        document.getElementById('progresso-texto').textContent = pct + '%';
+        document.getElementById('progresso-legenda').textContent = enviados + ' de ' + documentos.length + ' documentos enviados';
+
+        const btn = document.getElementById('btn-enviar-analise');
+        const aviso = document.getElementById('btn-enviar-aviso');
+        const obsArea = document.getElementById('area-observacoes');
+
+        if (enviados === documentos.length){
+          const algumReprovado = documentos.some(d => d.status === 'reprovado');
+          if (algumReprovado){
+            const obs = documentos.filter(d => d.status === 'reprovado').map(d => d.observacao).join(' ');
+            document.getElementById('texto-observacao').textContent = obs;
+            obsArea.classList.remove('hidden');
+            btn.disabled = true;
+            btn.className = 'w-full py-3.5 rounded-xl font-display font-semibold text-sm text-white bg-red-400 cursor-not-allowed transition-all duration-200 active:scale-95 disabled:active:scale-100';
+            btn.textContent = 'Corrija os documentos rejeitados';
+            aviso.textContent = 'Há documentos que precisam ser reenviados';
+            aviso.className = 'text-[10px] text-red-400 text-center mt-1.5 font-body';
+          } else {
+            obsArea.classList.add('hidden');
+            btn.disabled = false;
+            btn.className = 'w-full py-3.5 rounded-xl font-display font-semibold text-sm text-white bg-marca-500 hover:bg-marca-600 shadow-lg shadow-marca-500/25 active:scale-95 transition-all duration-200';
+            btn.textContent = 'Enviar para Análise';
+            aviso.textContent = 'Todos os documentos foram enviados';
+            aviso.className = 'text-[10px] text-green-500 text-center mt-1.5 font-body';
+          }
+        } else {
+          obsArea.classList.add('hidden');
+          btn.disabled = true;
+          btn.className = 'w-full py-3.5 rounded-xl font-display font-semibold text-sm text-white bg-gray-300 cursor-not-allowed transition-all duration-200 active:scale-95 disabled:active:scale-100';
+          btn.textContent = 'Enviar para Análise';
+          aviso.textContent = 'Envie todos os documentos para habilitar';
+          aviso.className = 'text-[10px] text-gray-400 text-center mt-1.5 font-body';
+        }
+
+        window.envio_de_documentos_renderHistorico();
+      };
+
+      window.envio_de_documentos_renderHistorico = function(){
+        const lista = document.getElementById('lista-historico');
+        const enviados = documentos.filter(d => d.status !== 'pendente').length;
+        if (enviados === 0){
+          lista.innerHTML = '<p class="text-xs text-gray-400 font-body text-center py-4">Nenhuma ação registrada ainda</p>';
+          return;
+        }
+        lista.innerHTML = historicoAnalise.map(h => {
+          const corAcao = h.acao.includes('reprovado') || h.acao.includes('Rejeitado') ? 'text-red-600' : h.acao.includes('aprovado') || h.acao.includes('Aprovado') ? 'text-green-600' : 'text-marca-600';
+          return '<div class="flex gap-3 bg-white rounded-xl border border-gray-100 p-3">'+
+            '<div class="flex flex-col items-center pt-0.5">'+
+              '<div class="w-8 h-8 rounded-full bg-marca-50 flex items-center justify-center">'+
+                '<svg class="w-4 h-4 text-marca-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'+
+              '</div>'+
+              '<div class="w-px h-6 bg-gray-200 mt-1"></div>'+
+            '</div>'+
+            '<div class="flex-1 pb-1">'+
+              '<p class="text-xs font-semibold '+corAcao+' font-body">'+h.acao+'</p>'+
+              '<p class="text-[10px] text-gray-400 font-body mt-0.5">'+h.detalhe+'</p>'+
+              '<div class="flex items-center gap-2 mt-1">'+
+                '<span class="text-[10px] text-gray-400 font-body">'+h.usuario+'</span>'+
+                '<span class="text-[10px] text-gray-300">•</span>'+
+                '<span class="text-[10px] text-gray-400 font-body">'+h.data+'</span>'+
+              '</div>'+
+            '</div>'+
+          '</div>';
+        }).join('');
+      };
+
+      window.envio_de_documentos_abrirDoc = function(id){
+        const d = documentos.find(x => x.id === id);
+        if (!d) return;
+        document.getElementById('doc-atual-id').value = id;
+        document.getElementById('input-arquivo').click();
+      };
+
+      window.envio_de_documentos_arquivoSelecionado = function(){
+        const input = document.getElementById('input-arquivo');
+        const id = document.getElementById('doc-atual-id').value;
+        if (!id || !input.files || !input.files[0]) return;
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e){
+          const d = documentos.find(x => x.id === id);
+          d.status = 'enviado';
+          d.arquivo = e.target.result;
+          d.nomeArquivo = file.name;
+          d.observacao = '';
+          input.value = '';
+          renderizar();
+          toast('Documento enviado com sucesso!', 'ok');
+        };
+        reader.readAsDataURL(file);
+      };
+
+      window.envio_de_documentos_removerDoc = function(id){
+        abrirModal(
+          '<div class="text-center py-2">'+
+            '<div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-3">'+
+              '<svg class="w-7 h-7 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>'+
+            '</div>'+
+            '<p class="font-display font-bold text-sm text-marca-900 mb-1">Remover documento?</p>'+
+            '<p class="text-xs text-gray-500 font-body">O documento será removido e precisará ser enviado novamente.</p>'+
+          '</div>'+
+          '<div class="flex gap-2 mt-5">'+
+            '<button onclick="fecharModal()" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-display font-semibold text-gray-600 hover:bg-gray-50 transition-colors active:scale-95">Cancelar</button>'+
+            '<button onclick="envio_de_documentos_confirmarRemocao(\''+id+'\')" class="flex-1 py-2.5 rounded-xl bg-red-500 text-xs font-display font-semibold text-white hover:bg-red-600 transition-colors active:scale-95">Remover</button>'+
+          '</div>',
+          'Confirmar Remoção'
+        );
+      };
+
+      window.envio_de_documentos_confirmarRemocao = function(id){
+        const d = documentos.find(x => x.id === id);
+        d.status = 'pendente';
+        d.arquivo = null;
+        d.nomeArquivo = '';
+        d.observacao = '';
+        fecharModal();
+        renderizar();
+        toast('Documento removido', 'info');
+      };
+
+      window.envio_de_documentos_visualizarDoc = function(id){
+        const d = documentos.find(x => x.id === id);
+        const cor = d.status === 'aprovado' ? 'green' : d.status === 'reprovado' ? 'red' : 'blue';
+        const conteudo = d.arquivo
+          ? '<div class="rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center" style="min-height:220px"><img src="'+d.arquivo+'" class="max-w-full max-h-60 object-contain"/></div>'
+          : '<div class="rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center py-12"><svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><p class="text-xs text-gray-400 mt-2 font-body">Visualização indisponível</p></div>';
+        abrirModal(
+          '<div class="space-y-3">'+
+            '<div class="flex items-center gap-2">'+
+              '<span class="px-2.5 py-1 rounded-full text-[10px] font-medium border '+statusConfig[d.status].cor+'">'+statusConfig[d.status].rotulo+'</span>'+
+              '<span class="text-xs text-gray-400 font-body">'+d.nomeArquivo+'</span>'+
+            '</div>'+
+            conteudo+
+            (d.observacao ? '<div class="bg-amber-50 border border-amber-200 rounded-xl p-3"><p class="text-xs font-semibold text-amber-700 font-body">Observação da equipe:</p><p class="text-xs text-amber-600 font-body mt-1">'+d.observacao+'</p></div>' : '')+
+            '<div class="flex gap-2 pt-1">'+
+              '<button onclick="fecharModal()" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-xs font-display font-semibold text-gray-600 hover:bg-gray-50 transition-colors active:scale-95">Fechar</button>'+
+              '<button onclick="fecharModal();envio_de_documentos_removerDoc(\''+d.id+'\')" class="flex-1 py-2.5 rounded-xl bg-red-50 text-xs font-display font-semibold text-red-500 hover:bg-red-100 transition-colors active:scale-95">Remover</button>'+
+              '<button onclick="fecharModal();envio_de_documentos_abrirDoc(\''+d.id+'\')" class="flex-1 py-2.5 rounded-xl bg-marca-500 text-xs font-display font-semibold text-white hover:bg-marca-600 transition-colors active:scale-95">Substituir</button>'+
+            '</div>'+
+          '</div>',
+          d.nome
+        );
+      };
+
+      window.envio_de_documentos_enviar = function(){
+        const btn = document.getElementById('btn-enviar-analise');
+        btn.disabled = true;
+        btn.innerHTML = '<svg class="w-5 h-5 animate-spin mx-auto" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>';
+        btn.className = 'w-full py-3.5 rounded-xl font-display font-semibold text-sm text-white bg-marca-400 cursor-wait transition-all duration-200';
+
+        setTimeout(function(){
+          btn.innerHTML = '<svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>';
+          btn.className = 'w-full py-3.5 rounded-xl font-display font-semibold text-sm text-white bg-green-500 transition-all duration-200';
+          toast('Documentos enviados para análise com sucesso!', 'ok');
+          const agora = new Date().toISOString().split('T')[0];
+          historicoAnalise.push({ data: agora, acao:'Documentos enviados para análise', usuario:'Você', detalhe:'Protocolo #ALM-2025-'+String(Math.floor(Math.random()*9000)+1000) });
+          renderizar();
+          setTimeout(function(){
+            btn.innerHTML = 'Enviado com Sucesso';
+            btn.className = 'w-full py-3.5 rounded-xl font-display font-semibold text-sm text-white bg-green-500 transition-all duration-200';
+          }, 800);
+        }, 2000);
+      };
+
+      renderizar();
+    })();
+    </script>
+
     <!-- TELAS -->
       </main>
 
