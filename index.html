@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>AlphaMon — Imóveis no Mapa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Libre+Franklin:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            marca: {
+              50:  '#EEF3FB',
+              100: '#D4E1F7',
+              200: '#A9C3EF',
+              300: '#7EA5E7',
+              400: '#5387DF',
+              500: '#2563EB',
+              600: '#1D4FA8',
+              700: '#163B85',
+              800: '#0F2861',
+              900: '#1E3A5F',
+              950: '#0D1E33',
+            },
+          },
+          fontFamily: {
+            display: ['"DM Serif Display"', 'Georgia', 'serif'],
+            body:    ['"Libre Franklin"', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            'app':      '0 2px 12px rgba(30,58,95,0.07), 0 0 0 1px rgba(30,58,95,0.04)',
+            'elevated': '0 8px 30px rgba(30,58,95,0.12), 0 0 0 1px rgba(30,58,95,0.06)',
+            'card':     '0 1px 4px rgba(30,58,95,0.06), 0 0 0 1px rgba(30,58,95,0.04)',
+          },
+          borderRadius: {
+            'app': ' '16px',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Libre Franklin', system-ui, sans-serif;
+      background: #0F172A;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- Scrollbar discreta ---- */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #A9C3EF; border-radius: 8px; }
+
+    /* ---- Foco visível ---- */
+    :focus-visible {
+      outline: 2px solid #2563EB;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* ---- Transição de entrada de telas ---- */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    [data-tela] {
+      animation: fadeSlideIn 0.28s ease-out both;
+    }
+
+    /* ---- Navegação ativa ---- */
+    [data-nav].ativo {
+      color: #2563EB;
+      position: relative;
+    }
+    [data-nav].ativo::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 3px;
+      background: #2563EB;
+      border-radius: 0 0 4px 4px;
+    }
+    [data-nav]:not(.ativo) {
+      color: #94A3B8;
+    }
+    [data-nav]:active {
+      opacity: 0.65;
+      transform: scale(0.93);
+      transition: transform 0.12s ease;
+    }
+
+    /* ---- Utilitários reutilizáveis ---- */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+    .card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(30,58,95,0.06), 0 0 0 1px rgba(30,58,95,0.04);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .card:active {
+      transform: scale(0.985);
+      box-shadow: 0 0 0 1px rgba(30,58,95,0.04);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-family: 'Libre Franklin', system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { transform: scale(0.96); }
+    .btn-primary {
+      background: #2563EB;
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+    }
+    .btn-primary:hover { background: #1D4FA8; }
+    .btn-secondary {
+      background: #EEF3FB;
+      color: #1E3A5F;
+    }
+    .btn-secondary:hover { background: #D4E1F7; }
+    .btn-outline {
+      background: transparent;
+      color: #2563EB;
+      border: 1.5px solid #2563EB;
+    }
+    .btn-outline:hover { background: #EEF3FB; }
+
+    /* ---- Moldura do celular em desktop ---- */
+    @media (min-width: 431px) {
+      .phone-frame {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+      }
+      .phone-body {
+        width: 390px;
+        height: 844px;
+        border-radius: 36px;
+        border: 4px solid #1E3A5F;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 0 2px #0F2861;
+      }
+    }
+    @media (max-width: 430px) {
+      .phone-frame { height: 100vh; }
+      .phone-body {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        border: none;
+        overflow: hidden;
+        position: relative;
+      }
+      .phone-body .status-bar { display: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-marca-950 flex justify-center items-center h-screen">
+
+  <!-- ========== MOLDURA DO CELULAR ========== -->
+  <div class="phone-frame">
+    <div class="phone-body bg-marca-50 flex flex-col h-full">
+
+      <!-- ===== STATUS BAR (desktop) ===== -->
+      <div class="status-bar flex items-center justify-between px-7 py-2 bg-white select-none" style="min-height:44px">
+        <span class="font-body text-xs font-semibold text-marca-900" id="relogio">09:41</span>
+        <div class="flex items-center gap-1.5">
+          <!-- Sinal -->
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#1E3A5F"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="0.5" fill="#1E3A5F"/><rect x="9" y="3" width="3" height="9" rx="0.5" fill="#1E3A5F"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="#1E3A5F" opacity="0.3"/></svg>
+          <!-- Wi-Fi -->
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M7 8.5C7.55228 8.5 8 8.05228 8 7.5C8 6.94772 7.55228 6.5 7 6.5C6.44772 6.5 6 6.94772 6 7.5C6 8.05228 6.44772 8.5 7 8.5Z" fill="#1E3A5F"/><path d="M4.5 5.5C5.5 4.5 8 4.5 9 5.5" stroke="#1E3A5F" stroke-width="1.2" stroke-linecap="round"/><path d="M2.5 3C4.1 1.6 5.9 1.6 7.5 3C9.1 1.6 10.9 1.6 12.5 3" stroke="#1E3A5F" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <!-- Bateria -->
+          <svg width="24" height="12" viewBox="0 0 24 12" fill="none"><rect x="0.75" y="0.75" width="19" height="10.5" rx="2.25" stroke="#1E3A5F" stroke-width="1.5"/><rect x="2.25" y="2.25" width="14" height="7.5" rx="1" fill="#1E3A5F"/><path d="M21 3.75V8.25C21.8 8.04 22.5 7.42 22.5 6.65C22.5 5.88 21.8 5.26 21 5.05" stroke="#1E3A5F" stroke-width="1.2"/></svg>
+        </div>
+      </div>
+
+      <!-- ===== ÁREA PRINCIPAL (telas entram aqui) ===== -->
+      <main id="app-main" class="flex-1 overflow-y-auto relative" style="min-height:0">
+        <!-- TELAS -->
+      </main>
+
+      <!-- ===== NAVEGAÇÃO INFERIOR ===== -->
+      <nav class="bg-white border-t border-marca-100 flex justify-around items-center py-1.5 pb-5 select-none z-20" style="min-height:60px">
+        <button data-nav="mapa-de-imoveis" onclick="mostrarTela('mapa-de-imoveis')" class="flex flex-col items-center gap-0.5 py-1 px-2 transition-colors duration-200" aria-label="Mapa">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+          <span class="text-[0.6rem] font-medium">Mapa</span>
+        </button>
+        <button data-nav="lista-de-imoveis" onclick="mostrarTela('lista-de-imoveis')" class="flex flex-col items-center gap-0.5 py-1 px-2 transition-colors duration-200" aria-label="Imóveis">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
+          <span class="text-[0.6rem] font-medium">Imóveis</span>
+        </button>
+        <button data-nav="agenda-de-visitas" onclick="mostrarTela('agenda-de-visitas')" class="flex flex-col items-center gap-0.5 py-1 px-2 transition-colors duration-200" aria-label="Visitas">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+          <span class="text-[0.6rem] font-medium">Visitas</span>
+        </button>
+        <button data-nav="simulacao-de-financiamento" onclick="mostrarTela('simulacao-de-financiamento')" class="flex flex-col items-center gap-0.5 py-1 px-2 transition-colors duration-200" aria-label="Financiamento">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span class="text-[0.6rem] font-medium">Financ.</span>
+        </button>
+        <button data-nav="central-de-atendimento" onclick="mostrarTela('central-de-atendimento')" class="flex flex-col items-center gap-0.5 py-1 px-2 transition-colors duration-200" aria-label="Atendimento">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 013 21V12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
+          <span class="text-[0.6rem] font-medium">Atend.</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ========== TOASTS ========== -->
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] flex flex-col items-center gap-2 pointer-events-none" style="max-width:360px;width:92%"></div>
+
+  <!-- ========== MODAL GENÉRICO ========== -->
+  <div id="modal-overlay" class="fixed inset-0 z-[9998] bg-black/50 hidden items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <div id="modal-card" class="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col shadow-elevated">
+      <div class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-marca-100">
+        <h3 id="modal-title" class="font-display text-lg text-marca-900"></h3>
+        <button onclick="fecharModal()" class="p-1.5 rounded-full hover:bg-marca-50 transition-colors" aria-label="Fechar modal">
+          <svg class="w-5 h-5 text-marca-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="modal-body" class="flex-1 overflow-y-auto p-5"></div>
+    </div>
+  </div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    /* ========== RELÓGIO ========== */
+    function atualizarRelogio() {
+      var agora = new Date();
+      var h = String(agora.getHours()).padStart(2, '0');
+      var m = String(agora.getMinutes()).padStart(2, '0');
+      var el = document.getElementById('relogio');
+      if (el) el.textContent = h + ':' + m;
+    }
+    atualizarRelogio();
+    setInterval(atualizarRelogio, 30000);
+
+    /* ========== ROTEADOR ========== */
+    function mostrarTela(id) {
+      document.querySelectorAll('[data-tela]').forEach(function (s) {
+        s.classList.toggle('hidden', s.dataset.tela !== id);
+      });
+      document.querySelectorAll('[data-nav]').forEach(function (b) {
+        b.classList.toggle('ativo', b.dataset.nav === id);
+      });
+      window.scrollTo({ top: 0 });
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      mostrarTela('mapa-de-imoveis');
+    });
+
+    /* ========== TOASTS ========== */
+    function toast(mensagem, tipo) {
+      tipo = tipo || 'info';
+      var container = document.getElementById('toast-container');
+      var cores = { ok: 'bg-emerald-600', erro: 'bg-red-600', info: 'bg-marca-900' };
+      var icones = {
+        ok:    '<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>',
+        erro:  '<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>',
+        info:  '<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>',
+      };
+      var el = document.createElement('div');
+      el.className = 'pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl text-white text-sm font-medium shadow-elevated ' + (cores[tipo] || cores.info);
+      el.innerHTML = (icones[tipo] || icones.info) + '<span>' + mensagem + '</span>';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(-12px)';
+      el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      container.appendChild(el);
+      requestAnimationFrame(function () {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+      setTimeout(function () {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-12px)';
+        setTimeout(function () { el.remove(); }, 300);
+      }, 3000);
+    }
+
+    /* ========== MODAL ========== */
+    function abrirModal(html, titulo) {
+      var overlay = document.getElementById('modal-overlay');
+      var title   = document.getElementById('modal-title');
+      var body    = document.getElementById('modal-body');
+      title.textContent = titulo || '';
+      body.innerHTML = html;
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+    function fecharModal() {
+      var overlay = document.getElementById('modal-overlay');
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+    }
+    document.getElementById('modal-overlay').addEventListener('click', function (e) {
+      if (e.target === this) fecharModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') fecharModal();
+    });
+
+    /* ========== FORMATAÇÃO ========== */
+    function brl(valor) {
+      return 'R$ ' + Number(valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function dataBR(iso) {
+      if (!iso) return '—';
+      var d = new Date(iso + 'T00:00:00');
+      var dia = String(d.getDate()).padStart(2, '0');
+      var mes = String(d.getMonth() + 1).padStart(2, '0');
+      var ano = d.getFullYear();
+      return dia + '/' + mes + '/' + ano;
+    }
+
+    /* ========== AVATAR COM INICIAIS ========== */
+    function avatar(iniciais, cor) {
+      cor = cor || '#2563EB';
+      return '<div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0" style="background:' + cor + '">' + iniciais + '</div>';
+    }
+
+    /* ========== LOGO SVG ========== */
+    function logoAlphaMon(tamanho) {
+      tamanho = tamanho || 28;
+      var s = '<svg width="' + tamanho + '" height="' + tamanho + '" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">';
+      s += '<rect width="32" height="32" rx="8" fill="#1E3A5F"/>';
+      s += '<path d="M9 24V12L16 6L23 12V24" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
+      s += '<path d="M12 24V16L16 13L20 16V24" stroke="#2563EB" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
+      s += '<path d="M6 24H26" stroke="#2563EB" stroke-width="2.4" stroke-linecap="round"/>';
+      s += '<circle cx="16" cy="18" r="2.5" fill="white"/>';
+      s += '</svg>';
+      return s;
+    }
+  </script>
+
+</body>
+</html>
