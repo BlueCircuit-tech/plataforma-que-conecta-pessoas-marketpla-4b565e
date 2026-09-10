@@ -2533,6 +2533,486 @@
       painel_administrativo_renderTabela(painel_admin_dados);
     </script>
 
+    <section data-tela="meus-anuncios" class="hidden">
+      <div class="px-4 pt-2 pb-6 animate-entrar">
+        <div class="mb-5">
+          <div class="flex items-center justify-between mb-1">
+            <h1 class="font-display text-xl font-bold text-cinza-900">Meus Anúncios</h1>
+            <button onclick="meus_anuncios_verComoCliente()" class="text-xs font-medium text-brand-600 hover:text-brand-700 flex items-center gap-1 active:scale-95 transition-all">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              Ver como o cliente vê
+            </button>
+          </div>
+          <p class="text-xs text-cinza-500">Gerencie seus imóveis cadastrados</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-5">
+          <div class="card !p-3">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-7 h-7 rounded-lg bg-green-100 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </div>
+              <span class="text-[10px] text-cinza-500 font-medium uppercase tracking-wider">Visualizações</span>
+            </div>
+            <p class="font-display text-lg font-bold text-cinza-900">1.284</p>
+            <span class="text-[10px] text-green-600 font-medium">+12% vs semana</span>
+          </div>
+          <div class="card !p-3">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-7 h-7 rounded-lg bg-brand-100 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+              </div>
+              <span class="text-[10px] text-cinza-500 font-medium uppercase tracking-wider">Contatos</span>
+            </div>
+            <p class="font-display text-lg font-bold text-cinza-900">47</p>
+            <span class="text-[10px] text-green-600 font-medium">+8 esta semana</span>
+          </div>
+          <div class="card !p-3">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <span class="text-[10px] text-cinza-500 font-medium uppercase tracking-wider">Visitas</span>
+            </div>
+            <p class="font-display text-lg font-bold text-cinza-900">12</p>
+            <span class="text-[10px] text-amber-600 font-medium">3 pendentes</span>
+          </div>
+          <div class="card !p-3">
+            <div class="flex items-center gap-2 mb-1.5">
+              <div class="w-7 h-7 rounded-lg bg-purple-100 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <span class="text-[10px] text-cinza-500 font-medium uppercase tracking-wider">Negócios</span>
+            </div>
+            <p class="font-display text-lg font-bold text-cinza-900">5</p>
+            <span class="text-[10px] text-brand-600 font-medium">Em andamento</span>
+          </div>
+        </div>
+
+        <div class="card !p-4 mb-5">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-display text-sm font-semibold text-cinza-800">Desempenho Semanal</h3>
+            <span class="text-[10px] text-cinza-500">Últimos 7 dias</span>
+          </div>
+          <svg class="w-full" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="55" width="22" height="18" rx="2" fill="#E2E8F0"/>
+            <rect x="42" y="40" width="22" height="33" rx="2" fill="#E2E8F0"/>
+            <rect x="74" y="30" width="22" height="43" rx="2" fill="#2563EB" opacity="0.85"/>
+            <rect x="106" y="45" width="22" height="28" rx="2" fill="#E2E8F0"/>
+            <rect x="138" y="20" width="22" height="53" rx="2" fill="#2563EB"/>
+            <rect x="170" y="35" width="22" height="38" rx="2" fill="#E2E8F0"/>
+            <rect x="202" y="25" width="22" height="48" rx="2" fill="#2563EB" opacity="0.9"/>
+            <rect x="234" y="15" width="22" height="58" rx="2" fill="#2563EB"/>
+            <rect x="266" y="38" width="22" height="35" rx="2" fill="#2563EB" opacity="0.75"/>
+            <line x1="10" y1="58" x2="288" y2="58" stroke="#CBD5E1" stroke-width="0.5" stroke-dasharray="3,3"/>
+            <text x="21" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Seg</text>
+            <text x="53" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Ter</text>
+            <text x="85" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Qua</text>
+            <text x="117" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Qui</text>
+            <text x="149" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Sex</text>
+            <text x="181" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Sáb</text>
+            <text x="213" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Dom</text>
+            <text x="245" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Seg</text>
+            <text x="277" y="74" text-anchor="middle" class="text-[7px]" fill="#94A3B8">Ter</text>
+          </svg>
+        </div>
+
+        <div class="flex items-center gap-2 mb-3">
+          <div class="relative flex-1">
+            <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-cinza-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input id="anuncios-busca" type="text" placeholder="Buscar anúncio..." oninput="meus_anuncios_filtrar()" class="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-cinza-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all font-body">
+          </div>
+          <button onclick="meus_anuncios_toggleFiltros()" id="btn-filtros" class="btn !px-3 !py-2.5 relative">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+            <span id="filtro-ativo" class="hidden absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white"></span>
+          </button>
+        </div>
+
+        <div id="filtros-painel" class="hidden mb-4 card !p-3">
+          <p class="text-xs font-semibold text-cinza-700 mb-2">Filtrar por status</p>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="meus_anuncios_setFiltro('todos')" class="filtro-btn active px-3 py-1.5 text-xs rounded-lg border transition-all" data-filtro="todos">Todos</button>
+            <button onclick="meus_anuncios_setFiltro('ativo')" class="filtro-btn px-3 py-1.5 text-xs rounded-lg border transition-all" data-filtro="ativo">Ativo</button>
+            <button onclick="meus_anuncios_setFiltro('pausado')" class="filtro-btn px-3 py-1.5 text-xs rounded-lg border transition-all" data-filtro="pausado">Pausado</button>
+            <button onclick="meus_anuncios_setFiltro('rascunho')" class="filtro-btn px-3 py-1.5 text-xs rounded-lg border transition-all" data-filtro="rascunho">Rascunho</button>
+            <button onclick="meus_anuncios_setFiltro('encerrado')" class="filtro-btn px-3 py-1.5 text-xs rounded-lg border transition-all" data-filtro="encerrado">Encerrado</button>
+          </div>
+        </div>
+
+        <div id="anuncios-lista" class="space-y-3"></div>
+
+        <div id="anuncios-vazio" class="hidden text-center py-10">
+          <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-cinza-100 flex items-center justify-center">
+            <svg class="w-8 h-8 text-cinza-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <p class="font-display font-semibold text-cinza-700 text-sm mb-1">Nenhum anúncio encontrado</p>
+          <p class="text-xs text-cinza-500">Tente ajustar os filtros ou crie um novo anúncio</p>
+        </div>
+      </div>
+
+      <button onclick="meus_anuncios_novo()" class="fixed bottom-6 right-4 w-14 h-14 bg-brand-500 hover:bg-brand-600 active:scale-90 text-white rounded-full shadow-lg shadow-brand-500/30 flex items-center justify-center transition-all z-50" style="max-width:430px;right:calc(50% - 195px + 16px);">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+      </button>
+
+      <div id="anuncio-detalhe-modal" class="hidden fixed inset-0 z-50">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="meus_anuncios_fecharModal()"></div>
+        <div class="absolute inset-x-0 bottom-0 bg-white rounded-t-2xl max-h-[85vh] overflow-y-auto animate-slide-up" id="anuncio-detalhe-conteudo"></div>
+      </div>
+
+      <script>
+      (function(){
+        var _filtroAtual = 'todos';
+        var _anuncios = [
+          {id:1, titulo:'Apartamento Jardins — 3 quartos', tipo:'Apartamento', endereco:'Rua Oscar Freire, 450 — Jardins, SP', preco:850000, precoAluguel:4200, quartos:3, banheiros:2, vagas:2, area:120, areaConstruida:95, status:'ativo', visualizacoes:342, contatos:18, visitas:5, favoritos:24, fotos:['JF'], dataCadastro:'2025-01-15', descricao:'Amplo apartamento com varanda gourmet, piso em madeira e armários planejados. Condomínio com piscina, academia e segurança 24h.'},
+          {id:2, titulo:'Casa Condomínio Alphaville', tipo:'Casa', endereco:'Alameda das Flechas, 1200 — Alphaville, Barueri', preco:2100000, precoAluguel:null, quartos:4, banheiros:3, vagas:4, area:450, areaConstruida:320, status:'ativo', visualizacoes:891, contatos:32, visitas:8, favoritos:56, fotos:['AC'], dataCadastro:'2025-02-03', descricao:'Casa térrea em condomínio fechado, lazer completo com piscina, churrasqueira e jardim.'},
+          {id:3, titulo:'Sala Comercial Centro', tipo:'Sala Comercial', endereco:'Av. Paulista, 1578 — Bela Vista, SP', preco:480000, precoAluguel:3500, quartos:0, banheiros:1, vagas:1, area:45, areaConstruida:42, status:'pausado', visualizacoes:156, contatos:7, visitas:1, favoritos:9, fotos:['SC'], dataCadastro:'2025-03-10', descricao:'Sala comercial em prédio executivo na Av. Paulista. Recepção, 1 vaga de garagem.'},
+          {id:4, titulo:'Terreno Plano — Jundiaí', tipo:'Terreno', endereco:'Rua das Hortências, 780 — Jundiaí, SP', preco:320000, precoAluguel:null, quartos:0, banheiros:0, vagas:0, area:600, areaConstruida:0, status:'ativo', visualizacoes:203, contatos:11, visitas:3, favoritos:14, fotos:['TJ'], dataCadastro:'2025-04-22', descricao:'Terreno plano e murado, excelente localização em rua asfaltada. Ideal para construção residencial.'},
+          {id:5, titulo:'Apartamento Mobiliado — Moema', tipo:'Apartamento', endereco:'Alameda dos Jequitibás, 89 — Moema, SP', preco:null, precoAluguel:3800, quartos:2, banheiros:1, vagas:1, area:68, areaConstruida:60, status:'ativo', visualizacoes:467, contatos:22, visitas:6, favoritos:31, fotos:['AM'], dataCadastro:'2025-01-28', descricao:'Apartamento mobiliado em Moema, próximo ao metrô. Lazer completo no condomínio.'},
+          {id:6, titulo:'Cobertura Duplex — Vila Madalena', tipo:'Cobertura', endereco:'Rua Aspicuelta, 234 — Vila Madalena, SP', preco:1850000, precoAluguel:null, quartos:3, banheiros:3, vagas:3, area:200, areaConstruida:180, status:'rascunho', visualizacoes:0, contatos:0, visitas:0, favoritos:0, fotos:['CV'], dataCadastro:'2025-06-01', descricao:'Cobertura duplex com terraço panorâmico, piscina privativa e vista privilegiada da cidade.'},
+          {id:7, titulo:'Galpão Industrial — Guarulhos', tipo:'Galpão', endereco:'Rodovia Presidente Dutra, Km 12 — Guarulhos, SP', preco:1500000, precoAluguel:18000, quartos:0, banheiros:2, vagas:5, area:800, areaConstruida:650, status:'ativo', visualizacoes:129, contatos:5, visitas:2, favoritos:7, fotos:['GI'], dataCadastro:'2025-05-14', descricao:'Galpão industrial com pé direito de 12m, doca para caminhões e escritório anexo.'},
+          {id:8, titulo:'Flat Studio — Pinheiros', tipo:'Flat', endereco:'Rua dos Pinheiros, 500 — Pinheiros, SP', preco:null, precoAluguel:2800, quartos:1, banheiros:1, vagas:1, area:35, areaConstruida:32, status:'encerrado', visualizacoes:512, contatos:28, visitas:9, favoritos:42, fotos:['FP'], dataCadastro:'2024-11-05', descricao:'Flat compacto e moderno em Pinheiros, com serviços de hotel inclusos no condomínio.'}
+        ];
+
+        window.meus_anuncios_novo = function(){
+          meus_anuncios_abrirEditor(null);
+        };
+
+        window.meus_anuncios_toggleFiltros = function(){
+          var painel = document.getElementById('filtros-painel');
+          painel.classList.toggle('hidden');
+        };
+
+        window.meus_anuncios_setFiltro = function(f){
+          _filtroAtual = f;
+          document.querySelectorAll('.filtro-btn').forEach(function(b){
+            b.classList.remove('active');
+            if(b.dataset.filtro === f){
+              b.classList.add('active');
+              b.style.background = '#1E3A5F';
+              b.style.color = '#F8FAFC';
+              b.style.borderColor = '#1E3A5F';
+            } else {
+              b.style.background = '#F8FAFC';
+              b.style.color = '#64748B';
+              b.style.borderColor = '#E2E8F0';
+            }
+          });
+          if(f !== 'todos'){
+            document.getElementById('filtro-ativo').classList.remove('hidden');
+          } else {
+            document.getElementById('filtro-ativo').classList.add('hidden');
+          }
+          meus_anuncios_filtrar();
+        };
+
+        window.meus_anuncios_filtrar = function(){
+          var busca = document.getElementById('anuncios-busca').value.toLowerCase();
+          var lista = document.getElementById('anuncios-lista');
+          var vazio = document.getElementById('anuncios-vazio');
+          var filtrados = [];
+          _anuncios.forEach(function(a){
+            var matchStatus = _filtroAtual === 'todos' || a.status === _filtroAtual;
+            var matchBusca = !busca || a.titulo.toLowerCase().includes(busca) || a.tipo.toLowerCase().includes(busca) || a.endereco.toLowerCase().includes(busca);
+            if(matchStatus && matchBusca) filtrados.push(a);
+          });
+          if(filtrados.length === 0){
+            lista.innerHTML = '';
+            vazio.classList.remove('hidden');
+          } else {
+            vazio.classList.add('hidden');
+            lista.innerHTML = filtrados.map(function(a){ return meus_anuncios_renderCard(a); }).join('');
+          }
+        };
+
+        function meus_anuncios_renderCard(a){
+          var statusCores = {ativo:'bg-green-100 text-green-700', pausado:'bg-amber-100 text-amber-700', rascunho:'bg-cinza-200 text-cinza-600', encerrado:'bg-red-100 text-red-600'};
+          var statusLabel = {ativo:'Ativo', pausado:'Pausado', rascunho:'Rascunho', encerrado:'Encerrado'};
+          var tipoIcon = {Apartamento:'🏢', Casa:'🏠', Terreno:'🌿', 'Sala Comercial':'🏢', Cobertura:'🏙️', Galpão:'🏭', Flat:'🏨'};
+          var gradientes = [['#1E3A5F','#2563EB'],['#0F766E','#14B8A6'],['#7C3AED','#A78BFA'],['#B45309','#F59E0B'],['#1E3A5F','#3B82F6'],['#047857','#34D399'],['#6D28D9','#8B5CF6'],['#1E40AF','#2563EB']];
+          var g = gradientes[a.id % gradientes.length];
+          var precoDisplay = a.preco ? 'R$ ' + Number(a.preco).toLocaleString('pt-BR') : 'R$ ' + Number(a.precoAluguel).toLocaleString('pt-BR') + '/mês';
+
+          return '<div class="card !p-0 overflow-hidden cursor-pointer active:scale-[0.98] transition-transform" onclick="meus_anuncios_abrirEditor(' + a.id + ')">' +
+            '<div class="flex gap-3 p-3">' +
+              '<div class="w-24 h-24 rounded-xl flex-shrink-0 flex items-center justify-center text-white font-display font-bold text-xl" style="background:linear-gradient(135deg,' + g[0] + ',' + g[1] + ')">' +
+                '<span class="text-2xl">' + (tipoIcon[a.tipo] || '🏠') + '</span>' +
+              '</div>' +
+              '<div class="flex-1 min-w-0">' +
+                '<div class="flex items-start justify-between gap-2 mb-1">' +
+                  '<h3 class="font-display text-sm font-semibold text-cinza-900 leading-tight line-clamp-2">' + a.titulo + '</h3>' +
+                '</div>' +
+                '<p class="text-xs text-cinza-500 mb-1 truncate">' + a.tipo + ' · ' + a.endereco + '</p>' +
+                '<p class="font-display text-base font-bold text-brand-600 mb-2">' + precoDisplay + '</p>' +
+                '<div class="flex items-center gap-2">' +
+                  '<span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold ' + statusCores[a.status] + '">' + statusLabel[a.status] + '</span>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="flex items-center border-t border-cinza-100 divide-x divide-cinza-100">' +
+              '<div class="flex-1 text-center py-2">' +
+                '<svg class="w-3.5 h-3.5 text-cinza-400 mx-auto mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>' +
+                '<span class="text-[10px] text-cinza-600 font-medium">' + a.visualizacoes + '</span>' +
+              '</div>' +
+              '<div class="flex-1 text-center py-2">' +
+                '<svg class="w-3.5 h-3.5 text-cinza-400 mx-auto mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' +
+                '<span class="text-[10px] text-cinza-600 font-medium">' + a.contatos + '</span>' +
+              '</div>' +
+              '<div class="flex-1 text-center py-2">' +
+                '<svg class="w-3.5 h-3.5 text-cinza-400 mx-auto mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>' +
+                '<span class="text-[10px] text-cinza-600 font-medium">' + a.visitas + '</span>' +
+              '</div>' +
+              '<div class="flex-1 text-center py-2">' +
+                '<svg class="w-3.5 h-3.5 text-cinza-400 mx-auto mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>' +
+                '<span class="text-[10px] text-cinza-600 font-medium">' + a.favoritos + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }
+
+        window.meus_anuncios_abrirEditor = function(id){
+          var anuncio = id ? _anuncios.find(function(x){return x.id === id;}) : null;
+          var isNew = !anuncio;
+          if(isNew){
+            anuncio = {id: Date.now(), titulo:'', tipo:'Apartamento', endereco:'', preco:0, precoAluguel:0, quartos:0, banheiros:0, vagas:0, area:0, areaConstruida:0, status:'rascunho', visualizacoes:0, contatos:0, visitas:0, favoritos:0, fotos:[], dataCadastro: new Date().toISOString().split('T')[0], descricao:''};
+          }
+          var isVenda = anuncio.preco > 0;
+          var isAluguel = anuncio.precoAluguel > 0;
+
+          var statusCores = {ativo:'bg-green-100 text-green-700', pausado:'bg-amber-100 text-amber-700', rascunho:'bg-cinza-200 text-cinza-600', encerrado:'bg-red-100 text-red-600'};
+          var statusLabel = {ativo:'Ativo', pausado:'Pausado', rascunho:'Rascunho', encerrado:'Encerrado'};
+
+          var html = '<div class="p-4">' +
+            '<div class="flex items-center justify-between mb-4">' +
+              '<h2 class="font-display text-lg font-bold text-cinza-900">' + (isNew ? 'Novo Anúncio' : 'Editar Anúncio') + '</h2>' +
+              '<button onclick="meus_anuncios_fecharModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-cinza-100 transition-colors">' +
+                '<svg class="w-5 h-5 text-cinza-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+              '</button>' +
+            '</div>' +
+
+            '<div class="flex gap-2 mb-4">' +
+              '<button onclick="meus_anuncios_toggleStatus(' + anuncio.id + ')" class="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ' + statusCores[anuncio.status] + '">' +
+                statusLabel[anuncio.status] +
+              '</button>' +
+              (!isNew ? '<button onclick="meus_anuncios_excluir(' + anuncio.id + ')" class="!px-4 py-2.5 bg-red-50 text-red-600 rounded-xl text-sm font-semibold active:scale-95 transition-all">Excluir</button>' : '') +
+            '</div>' +
+
+            '<div class="space-y-3">' +
+              '<div>' +
+                '<label class="text-xs font-semibold text-cinza-700 mb-1 block">Título do anúncio</label>' +
+                '<input id="edit-titulo" type="text" value="' + (anuncio.titulo || '') + '" class="w-full px-3 py-2.5 text-sm border border-cinza-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-body" placeholder="Ex: Apartamento Jardins — 3 quartos">' +
+              '</div>' +
+              '<div>' +
+                '<label class="text-xs font-semibold text-cinza-700 mb-1 block">Endereço completo</label>' +
+                '<input id="edit-endereco" type="text" value="' + (anuncio.endereco || '') + '" class="w-full px-3 py-2.5 text-sm border border-cinza-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-body" placeholder="Rua, número, bairro, cidade">' +
+              '</div>' +
+              '<div>' +
+                '<label class="text-xs font-semibold text-cinza-700 mb-1 block">Tipo do imóvel</label>' +
+                '<select id="edit-tipo" class="w-full px-3 py-2.5 text-sm border border-cinza-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-body bg-white">' +
+                  ['Apartamento','Casa','Terreno','Sala Comercial','Cobertura','Galpão','Flat','Kitnet'].map(function(t){
+                    return '<option value="' + t + '"' + (anuncio.tipo === t ? ' selected' : '') + '>' + t + '</option>';
+                  }).join('') +
+                '</select>' +
+              '</div>' +
+              '<div class="grid grid-cols-2 gap-3">' +
+                '<div>' +
+                  '<label class="text-xs font-semibold text-cinza-700 mb-1 block">Valor de venda (R$)</label>' +
+                  '<input id="edit-preco" type="text" value="' + (anuncio.preco > 0 ? 'R$ ' + anuncio.preco.toLocaleString('pt-BR') : '') + '" class="w-full px-3 py-2.5 text-sm border border-cinza-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-body" placeholder="R$ 0,00" onfocus="this.value=''">' +
+                '</div>' +
+                '<div>' +
+                  '<label class="text-xs font-semibold text-cinza-700 mb-1 block">Valor do aluguel (R$)</label>' +
+                  '<input id="edit-aluguel" type="text" value="' + (anuncio.precoAluguel > 0 ? 'R$ ' + anuncio.precoAluguel.toLocaleString('pt-BR') : '') + '" class="w-full px-3 py-2.5 text-sm border border-cinza-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-body" placeholder="R$ 0/mês" onfocus="this.value=''">' +
+                '</div>' +
+              '</div>' +
+              '<div class="grid grid-cols-4 gap-2">' +
+                '<div><label class="text-[10px] font-semibold text-cinza-600 mb-0.5 block">Quartos</label><input id="edit-quartos" type="number" value="' + anuncio.quartos + '" class="w-full px-2 py-2 text-sm border border-cinza-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-center font-body"></div>' +
+                '<div><label class="text-[10px] font-semibold text-cinza-600 mb-0.5 block">Banheiros</label><input id="edit-banheiros" type="number" value="' + anuncio.banheiros + '" class="w-full px-2 py-2 text-sm border border-cinza-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-center font-body"></div>' +
+                '<div><label class="text-[10px] font-semibold text-cinza-600 mb-0.5 block">Vagas</label><input id="edit-vagas" type="number" value="' + anuncio.vagas + '" class="w-full px-2 py-2 text-sm border border-cinza-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-center font-body"></div>' +
+                '<div><label class="text-[10px] font-semibold text-cinza-600 mb-0.5 block">Área (m²)</label><input id="edit-area" type="number" value="' + anuncio.area + '" class="w-full px-2 py-2 text-sm border border-cinza-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-center font-body"></div>' +
+              '</div>' +
+              '<div>' +
+                '<label class="text-xs font-semibold text-cinza-700 mb-1 block">Descrição</label>' +
+                '<textarea id="edit-desc" rows="3" class="w-full px-3 py-2.5 text-sm border border-cinza-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 font-body resize-none" placeholder="Descreva as características do imóvel...">' + anuncio.descricao + '</textarea>' +
+              '</div>' +
+            '</div>' +
+
+            (!isNew ? '<div class="mt-5 pt-4 border-t border-cinza-100">' +
+              '<h3 class="font-display text-sm font-semibold text-cinza-800 mb-3">Estatísticas do Anúncio</h3>' +
+              '<div class="grid grid-cols-3 gap-2 mb-4">' +
+                '<div class="bg-brand-50 rounded-xl p-3 text-center">' +
+                  '<p class="font-display text-xl font-bold text-brand-700">' + anuncio.visualizacoes + '</p>' +
+                  '<p class="text-[10px] text-cinza-500">Visualizações</p>' +
+                '</div>' +
+                '<div class="bg-green-50 rounded-xl p-3 text-center">' +
+                  '<p class="font-display text-xl font-bold text-green-700">' + anuncio.contatos + '</p>' +
+                  '<p class="text-[10px] text-cinza-500">Contatos</p>' +
+                '</div>' +
+                '<div class="bg-amber-50 rounded-xl p-3 text-center">' +
+                  '<p class="font-display text-xl font-bold text-amber-700">' + anuncio.visitas + '</p>' +
+                  '<p class="text-[10px] text-cinza-500">Visitas</p>' +
+                '</div>' +
+              '</div>' +
+              '<svg class="w-full" viewBox="0 0 280 60" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<text x="140" y="12" text-anchor="middle" class="text-[9px]" fill="#64748B">Visitas nos últimos 14 dias</text>' +
+                '<rect x="15" y="40" width="14" height="12" rx="1" fill="#DBEAFE"/>' +
+                '<rect x="37" y="36" width="14" height="16" rx="1" fill="#2563EB" opacity="0.6"/>' +
+                '<rect x="59" y="30" width="14" height="22" rx="1" fill="#2563EB" opacity="0.7"/>' +
+                '<rect x="81" y="38" width="14" height="14" rx="1" fill="#DBEAFE"/>' +
+                '<rect x="103" y="24" width="14" height="28" rx="1" fill="#2563EB" opacity="0.85"/>' +
+                '<rect x="125" y="34" width="14" height="18" rx="1" fill="#DBEAFE"/>' +
+                '<rect x="147" y="20" width="14" height="32" rx="1" fill="#2563EB"/>' +
+                '<rect x="169" y="28" width="14" height="24" rx="1" fill="#2563EB" opacity="0.8"/>' +
+                '<rect x="191" y="16" width="14" height="36" rx="1" fill="#2563EB"/>' +
+                '<rect x="213" y="22" width="14" height="30" rx="1" fill="#2563EB" opacity="0.9"/>' +
+                '<rect x="235" y="32" width="14" height="20" rx="1" fill="#DBEAFE"/>' +
+                '<rect x="257" y="26" width="14" height="26" rx="1" fill="#2563EB" opacity="0.75"/>' +
+              '</svg>' +
+            '</div>' : '') +
+
+            '<div class="flex gap-3 mt-5 pt-4 border-t border-cinza-100">' +
+              '<button onclick="meus_anuncios_salvar(' + anuncio.id + ')" class="flex-1 btn !py-3 text-sm active:scale-95 transition-all">Salvar alterações</button>' +
+              '<button onclick="meus_anuncios_fecharModal()" class="!px-5 py-3 bg-cinza-100 text-cinza-700 rounded-xl text-sm font-semibold active:scale-95 transition-all">Cancelar</button>' +
+            '</div>' +
+          '</div>';
+
+          abrirModal(html, isNew ? 'Novo Anúncio' : anuncio.titulo);
+        };
+
+        window.meus_anuncios_toggleStatus = function(id){
+          var a = _anuncios.find(function(x){return x.id === id;});
+          if(!a) return;
+          var ordem = ['rascunho','ativo','pausado','encerrado'];
+          var idx = ordem.indexOf(a.status);
+          a.status = ordem[(idx + 1) % ordem.length];
+          meus_anuncios_filtrar();
+          meus_anuncios_abrirEditor(id);
+          var nomes = {rascunho:'Rascunho',ativo:'Ativo',pausado:'Pausado',encerrado:'Encerrado'};
+          toast('Status alterado para: ' + nomes[a.status], 'ok');
+        };
+
+        window.meus_anuncios_salvar = function(id){
+          var titulo = document.getElementById('edit-titulo').value.trim();
+          var endereco = document.getElementById('edit-endereco').value.trim();
+          var tipo = document.getElementById('edit-tipo').value;
+          var precoStr = document.getElementById('edit-preco').value.replace(/[^\d]/g,'');
+          var aluguelStr = document.getElementById('edit-aluguel').value.replace(/[^\d]/g,'');
+          var quartos = parseInt(document.getElementById('edit-quartos').value) || 0;
+          var banheiros = parseInt(document.getElementById('edit-banheiros').value) || 0;
+          var vagas = parseInt(document.getElementById('edit-vagas').value) || 0;
+          var area = parseInt(document.getElementById('edit-area').value) || 0;
+          var descricao = document.getElementById('edit-desc').value.trim();
+
+          if(!titulo){ toast('Informe o título do anúncio','erro'); return; }
+          if(!endereco){ toast('Informe o endereço','erro'); return; }
+
+          var isNew = !_anuncios.find(function(x){return x.id === id;});
+
+          if(isNew){
+            var novo = {
+              id: Date.now(), titulo: titulo, tipo: tipo, endereco: endereco,
+              preco: parseInt(precoStr)||0, precoAluguel: parseInt(aluguelStr)||0,
+              quartos: quartos, banheiros: banheiros, vagas: vagas, area: area, areaConstruida: area * 0.8,
+              status: 'rascunho', visualizacoes: 0, contatos: 0, visitas: 0, favoritos: 0,
+              fotos: [], dataCadastro: new Date().toISOString().split('T')[0], descricao: descricao
+            };
+            _anuncios.unshift(novo);
+            toast('Anúncio criado com sucesso!', 'ok');
+          } else {
+            var a = _anuncios.find(function(x){return x.id === id;});
+            if(a){
+              a.titulo = titulo; a.endereco = endereco; a.tipo = tipo;
+              a.preco = parseInt(precoStr)||0; a.precoAluguel = parseInt(aluguelStr)||0;
+              a.quartos = quartos; a.banheiros = banheiros; a.vagas = vagas; a.area = area;
+              a.descricao = descricao;
+            }
+            toast('Anúncio atualizado com sucesso!', 'ok');
+          }
+          meus_anuncios_fecharModal();
+          meus_anuncios_filtrar();
+        };
+
+        window.meus_anuncios_excluir = function(id){
+          abrirModal(
+            '<div class="text-center py-6">' +
+              '<div class="w-14 h-14 mx-auto mb-3 rounded-full bg-red-100 flex items-center justify-center">' +
+                '<svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>' +
+              '</div>' +
+              '<h3 class="font-display font-bold text-cinza-900 mb-1">Excluir anúncio?</h3>' +
+              '<p class="text-sm text-cinza-500 mb-5">Esta ação não pode ser desfeita. O imóvel será removido do mapa e dos resultados de busca.</p>' +
+              '<div class="flex gap-3">' +
+                '<button onclick="meus_anuncios_fecharModal()" class="flex-1 btn !py-2.5 text-sm">Cancelar</button>' +
+                '<button onclick="meus_anuncios_confirmarExcluir(' + id + ')" class="flex-1 !py-2.5 bg-red-500 text-white rounded-xl text-sm font-semibold active:scale-95 transition-all">Excluir</button>' +
+              '</div>' +
+            '</div>', 'Confirmar exclusão'
+          );
+        };
+
+        window.meus_anuncios_confirmarExcluir = function(id){
+          _anuncios = _anuncios.filter(function(x){return x.id !== id;});
+          meus_anuncios_fecharModal();
+          meus_anuncios_filtrar();
+          toast('Anúncio excluído', 'info');
+        };
+
+        window.meus_anuncios_fecharModal = function(){
+          fecharModal();
+        };
+
+        window.meus_anuncios_verComoCliente = function(){
+          var ativos = _anuncios.filter(function(a){return a.status === 'ativo';});
+          if(ativos.length === 0){
+            toast('Nenhum anúncio ativo para visualizar', 'info');
+            return;
+          }
+          var a = ativos[0];
+          var precoDisplay = a.preco ? 'R$ ' + Number(a.preco).toLocaleString('pt-BR') : 'R$ ' + Number(a.precoAluguel).toLocaleString('pt-BR') + '/mês';
+          var gradientes = [['#1E3A5F','#2563EB'],['#0F766E','#14B8A6'],['#7C3AED','#A78BFA'],['#B45309','#F59E0B']];
+          var g = gradientes[a.id % gradientes.length];
+
+          abrirModal(
+            '<div>' +
+              '<div class="w-full h-52 rounded-t-2xl flex items-center justify-center text-white font-display font-bold text-3xl" style="background:linear-gradient(135deg,' + g[0] + ',' + g[1] + ')">' +
+                '<span class="text-5xl">🏠</span>' +
+              '</div>' +
+              '<div class="p-4">' +
+                '<div class="flex items-start justify-between mb-2">' +
+                  '<h2 class="font-display text-lg font-bold text-cinza-900 flex-1">' + a.titulo + '</h2>' +
+                '</div>' +
+                '<p class="text-xs text-cinza-500 mb-1 flex items-center gap-1">' +
+                  '<svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>' +
+                  a.endereco +
+                '</p>' +
+                '<p class="font-display text-2xl font-bold text-brand-600 mb-3">' + precoDisplay + '</p>' +
+                '<div class="flex gap-2 mb-4">' +
+                  (a.quartos ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-cinza-100 rounded-lg text-xs text-cinza-700"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>' + a.quartos + ' quarto' + (a.quartos > 1 ? 's' : '') + '</span>' : '') +
+                  (a.banheiros ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-cinza-100 rounded-lg text-xs text-cinza-700"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>' + a.banheiros + ' banheiro' + (a.banheiros > 1 ? 's' : '') + '</span>' : '') +
+                  (a.vagas ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-cinza-100 rounded-lg text-xs text-cinza-700"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>' + a.vagas + ' vaga' + (a.vagas > 1 ? 's' : '') + '</span>' : '') +
+                  (a.area ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-cinza-100 rounded-lg text-xs text-cinza-700">' + a.area + ' m²</span>' : '') +
+                '</div>' +
+                '<p class="text-sm text-cinza-600 leading-relaxed mb-5">' + a.descricao + '</p>' +
+                '<div class="flex gap-3">' +
+                  '<button onclick="meus_anuncios_fecharModal();mostrarTela(\'detalhe-do-imovel\')" class="flex-1 btn !py-3 text-sm active:scale-95 transition-all">Ver detalhe completo</button>' +
+                  '<button onclick="meus_anuncios_fecharModal()" class="!px-5 py-3 bg-cinza-100 text-cinza-700 rounded-xl text-sm font-semibold active:scale-95 transition-all">Fechar</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>',
+            'Visualização do Cliente'
+          );
+        };
+
+        _anuncios_setInicial = function(){
+          meus_anuncios_setFiltro('todos');
+          meus_anuncios_filtrar();
+        };
+
+        if(document.readyState === 'loading'){
+          document.addEventListener('DOMContentLoaded', _anuncios_setInicial);
+        } else {
+          _anuncios_setInicial();
+        }
+      })();
+      </script>
+    </section>
+
     <!-- TELAS -->
       </main>
 
